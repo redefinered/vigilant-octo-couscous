@@ -1,6 +1,6 @@
-# ACC Fuel Calculator 🏎️⚙️
+# ACC Companion 🏎️⚙️
 
-A native desktop application built with **Electron Forge**, **React**, **TypeScript**, and **Webpack**. Designed to help Assetto Corsa Competizione (ACC) drivers calculate fuel requirements based on lap time, race duration, and fuel usage — with full offline support and clean UI.
+A native desktop application built with **Electron Forge**, **React**, **TypeScript**, and **Webpack**. Designed to help Assetto Corsa Competizione (ACC) drivers calculate fuel requirements and view live telemetry data — with full offline support and a clean UI.
 
 ---
 
@@ -26,6 +26,7 @@ A native desktop application built with **Electron Forge**, **React**, **TypeScr
   - Estimated total laps
   - Fuel per stint
   - Total fuel needed (including 1-lap buffer + optional formation lap)
+- Live Telemetry from ACC via Broadcast API
 - Help modal for users
 - Fully offline, distributable `.exe`
 
@@ -36,8 +37,8 @@ A native desktop application built with **Electron Forge**, **React**, **TypeScr
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/acc-fuel-calc.git
-cd acc-fuel-calc
+git clone https://github.com/redefinered/vigilant-octo-couscous.git
+cd vigilant-octo-couscous
 ```
 
 ### 2. Install Dependencies
@@ -59,13 +60,18 @@ Electron will launch with hot-reloaded React + TypeScript.
 ## 🧱 Project Structure
 
 ```
-acc-fuel-calc/
+vigilant-octo-couscous/
 ├── src/
-│   ├── main/             # Electron main process (main.ts)
-│   └── renderer/         # React UI (App.tsx, index.tsx, styles)
-├── forge.config.ts       # Forge build config
+│   ├── App.tsx
+│   ├── index.css
+│   ├── index.html
+│   ├── index.ts
+│   ├── preload.ts
+│   ├── renderer.tsx
+├── forge.config.ts
 ├── package.json
-└── README.md
+├── README.md
+└── ...
 ```
 
 ---
@@ -105,7 +111,7 @@ Results: ~43 laps → ~132L fuel (with buffer)
 
 ## 👤 Author
 
-Created by [Your Name] — for sim racers who want to ditch spreadsheets and focus on racing.
+Created by [Red De Guzman](https://github.com/redefinered) — for sim racers who want to ditch spreadsheets and focus on racing.
 
 ---
 
