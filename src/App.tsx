@@ -263,23 +263,64 @@ const App: React.FC = () => {
                 </p>
               </div>
             ) : telemetry ? (
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div className="text-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                  <div className="telemetry-value text-acc-red">{telemetry.fuel?.toFixed(1)} L</div>
-                  <div className="telemetry-label">Fuel Left</div>
+              <div className="space-y-4">
+                {/* Basic telemetry */}
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  <div className="text-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                    <div className="telemetry-value text-acc-red">{telemetry.fuel?.toFixed(1)} L</div>
+                    <div className="telemetry-label">Fuel Left</div>
+                  </div>
+                  <div className="text-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                    <div className="telemetry-value text-acc-blue">{telemetry.currentLapTime?.toFixed(2)} s</div>
+                    <div className="telemetry-label">Current Lap</div>
+                  </div>
+                  <div className="text-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                    <div className="telemetry-value text-acc-blue">{telemetry.lastLapTime?.toFixed(2)} s</div>
+                    <div className="telemetry-label">Last Lap</div>
+                  </div>
+                  <div className="text-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                    <div className="telemetry-value text-acc-blue">{telemetry.bestLapTime?.toFixed(2)} s</div>
+                    <div className="telemetry-label">Best Lap</div>
+                  </div>
                 </div>
-                <div className="text-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                  <div className="telemetry-value text-acc-blue">{telemetry.currentLapTime?.toFixed(2)} s</div>
-                  <div className="telemetry-label">Current Lap</div>
+
+                {/* Additional telemetry from bridge */}
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  <div className="text-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                    <div className="telemetry-value text-acc-yellow">{telemetry.speed?.toFixed(1)} km/h</div>
+                    <div className="telemetry-label">Speed</div>
+                  </div>
+                  <div className="text-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                    <div className="telemetry-value text-purple-600">{telemetry.rpm?.toLocaleString()}</div>
+                    <div className="telemetry-label">RPM</div>
+                  </div>
+                  <div className="text-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                    <div className="telemetry-value text-orange-600">{telemetry.gear}</div>
+                    <div className="telemetry-label">Gear</div>
+                  </div>
+                  <div className="text-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                    <div className="telemetry-value text-green-600">{(telemetry.throttle * 100)?.toFixed(0)}%</div>
+                    <div className="telemetry-label">Throttle</div>
+                  </div>
+                  <div className="text-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                    <div className="telemetry-value text-red-600">{(telemetry.brake * 100)?.toFixed(0)}%</div>
+                    <div className="telemetry-label">Brake</div>
+                  </div>
                 </div>
-                <div className="text-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                  <div className="telemetry-value text-acc-green">{telemetry.completedLaps}</div>
-                  <div className="telemetry-label">Completed Laps</div>
-                </div>
-                <div className="text-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                  <div className="telemetry-value text-acc-yellow">{telemetry.speed?.toFixed(1)} km/h</div>
-                  <div className="telemetry-label">Speed</div>
-                </div>
+
+                {/* Session info */}
+                {telemetry.track && (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="text-center p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+                      <div className="telemetry-label text-blue-600 dark:text-blue-400">Track</div>
+                      <div className="telemetry-value text-sm">{telemetry.track || 'Unknown'}</div>
+                    </div>
+                    <div className="text-center p-3 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
+                      <div className="telemetry-label text-purple-600 dark:text-purple-400">Session</div>
+                      <div className="telemetry-value text-sm">{telemetry.sessionType || 'Unknown'}</div>
+                    </div>
+                  </div>
+                )}
               </div>
             ) : (
               <div className="text-center py-8">
@@ -311,6 +352,7 @@ const App: React.FC = () => {
                 <h3 className="font-semibold mb-2">Live Telemetry:</h3>
                 <ul className="list-disc pl-5 space-y-1 text-gray-600 dark:text-gray-400">
                   <li>Make sure ACC is running</li>
+                  <li>Start ACCBridge server (dotnet run in ACCBridge folder)</li>
                   <li>Enable telemetry in ACC settings</li>
                   <li>View real-time data from your current session</li>
                 </ul>

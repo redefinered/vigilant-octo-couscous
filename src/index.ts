@@ -1,8 +1,7 @@
 import { app, BrowserWindow, session } from 'electron';
 import installExtension, { REACT_DEVELOPER_TOOLS } from 'electron-devtools-installer';
 import { ipcMain } from 'electron';
-import net from 'net';
-import dgram from 'dgram';
+import WebSocket from 'ws';
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
 declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: string;
@@ -42,110 +41,101 @@ app.whenReady().then(() => {
   createWindow();
 });
 
-const TCP_PORT = 9000;
-const TCP_PASSWORD = 'asd';
-let latestTcpTelemetry: any = {};
-let tcpConnected = false;
-let tcpError: string | null = null;
-let tcpClient: net.Socket | null = null;
+// WebSocket connection to ACCBridge
+const WEBSOCKET_URL = 'ws://localhost:1337/telemetry';
+let latestTelemetry: any = {};
+let wsConnected = false;
+let wsError: string | null = null;
+let wsClient: WebSocket | null = null;
 let reconnectTimeout: NodeJS.Timeout | null = null;
 
-function connectToAccBroadcastApi() {
-  if (tcpClient) {
-    try { tcpClient.destroy(); } catch {}
-    tcpClient = null;
+function connectToACCBridge() {
+  if (wsClient) {
+    try { wsClient.close(); } catch {}
+    wsClient = null;
   }
   if (reconnectTimeout) {
     clearTimeout(reconnectTimeout);
     reconnectTimeout = null;
   }
-  tcpClient = new net.Socket();
-  tcpClient.connect(TCP_PORT, '127.0.0.1', () => {
-    tcpConnected = true;
-    tcpError = null;
-    tcpClient!.write(JSON.stringify({
-      "command": "register",
-      "connectionPassword": TCP_PASSWORD,
-      "name": "ACC Companion"
-    }) + '\r\n');
+  
+  wsClient = new WebSocket(WEBSOCKET_URL);
+  
+  wsClient.on('open', () => {
+    wsConnected = true;
+    wsError = null;
+    console.log('Connected to ACCBridge WebSocket');
   });
-  tcpClient.on('data', (data) => {
+  
+  wsClient.on('message', (data) => {
     try {
-      const messages = data.toString().split('\r\n').filter(Boolean);
-      for (const msg of messages) {
-        const parsed = JSON.parse(msg);
-        latestTcpTelemetry = parsed;
-      }
+      const parsed = JSON.parse(data.toString());
+      latestTelemetry = parsed;
     } catch (e) {
-      console.error('Failed to parse ACC TCP data:', e);
+      console.error('Failed to parse ACCBridge WebSocket data:', e);
     }
   });
-  tcpClient.on('close', () => {
-    tcpConnected = false;
-    tcpError = 'Connection to ACC closed.';
-    if (tcpClient) {
-      try { tcpClient.destroy(); } catch {}
-      tcpClient = null;
+  
+  wsClient.on('close', () => {
+    wsConnected = false;
+    wsError = 'Connection to ACCBridge closed.';
+    console.log('Disconnected from ACCBridge WebSocket');
+    if (wsClient) {
+      try { wsClient.close(); } catch {}
+      wsClient = null;
     }
-    reconnectTimeout = setTimeout(connectToAccBroadcastApi, 10000);
+    reconnectTimeout = setTimeout(connectToACCBridge, 5000);
   });
-  tcpClient.on('error', (err) => {
-    tcpConnected = false;
-    tcpError = 'Cannot connect to ACC Broadcast API: ' + err.message;
-    if (tcpClient) {
-      try { tcpClient.destroy(); } catch {}
-      tcpClient = null;
+  
+  wsClient.on('error', (err) => {
+    wsConnected = false;
+    wsError = 'Cannot connect to ACCBridge: ' + err.message;
+    console.error('ACCBridge WebSocket error:', err);
+    if (wsClient) {
+      try { wsClient.close(); } catch {}
+      wsClient = null;
     }
-    reconnectTimeout = setTimeout(connectToAccBroadcastApi, 10000);
+    reconnectTimeout = setTimeout(connectToACCBridge, 5000);
   });
 }
 
-connectToAccBroadcastApi();
-
-const UDP_PORT = 5606;
-let latestUdpTelemetry: any = {};
-
-try {
-  const udpServer = dgram.createSocket('udp4');
-  udpServer.on('message', (msg) => {
-    latestUdpTelemetry = { raw: msg.toString('hex') };
-  });
-  udpServer.bind(UDP_PORT);
-} catch (e) {
-  console.error('UDP server error:', e);
-}
+connectToACCBridge();
 
 ipcMain.handle('get-telemetry', async () => {
-  if (tcpError) {
-    return { error: tcpError };
+  if (wsError) {
+    return { error: wsError };
   }
-  if (latestTcpTelemetry && Object.keys(latestTcpTelemetry).length > 0) {
-    if (latestTcpTelemetry.type === 'RealtimeCarUpdate' && latestTcpTelemetry.car) {
-      return {
-        fuel: latestTcpTelemetry.car.fuel,
-        currentLapTime: latestTcpTelemetry.car.currentLapTime,
-        completedLaps: latestTcpTelemetry.car.completedLaps,
-        speed: latestTcpTelemetry.car.speedKmh
-      };
-    }
-    if (Array.isArray(latestTcpTelemetry.cars)) {
-      const playerCar = latestTcpTelemetry.cars.find((c: any) => c.isPlayerCar);
-      if (playerCar) {
-        return {
-          fuel: playerCar.fuel,
-          currentLapTime: playerCar.currentLapTime,
-          completedLaps: playerCar.completedLaps,
-          speed: playerCar.speedKmh
-        };
-      }
-    }
-    return latestTcpTelemetry;
+  if (latestTelemetry && Object.keys(latestTelemetry).length > 0) {
+    return {
+      fuel: latestTelemetry.fuel,
+      currentLapTime: latestTelemetry.currentLapTime,
+      lastLapTime: latestTelemetry.lastLapTime,
+      bestLapTime: latestTelemetry.bestLapTime,
+      speed: latestTelemetry.speed,
+      rpm: latestTelemetry.rpm,
+      gear: latestTelemetry.gear,
+      throttle: latestTelemetry.throttle,
+      brake: latestTelemetry.brake,
+      steer: latestTelemetry.steer,
+      tyrePressure: latestTelemetry.tyrePressure,
+      tyreTemp: latestTelemetry.tyreTemp,
+      rideHeight: latestTelemetry.rideHeight,
+      brakeTemp: latestTelemetry.brakeTemp,
+      sessionType: latestTelemetry.sessionType,
+      track: latestTelemetry.track
+    };
   } else {
     return {
       fuel: 50.0,
       currentLapTime: 120.5,
-      completedLaps: 10,
-      speed: 180.0
+      lastLapTime: 130.0,
+      bestLapTime: 119.0,
+      speed: 180.0,
+      rpm: 6000,
+      gear: 3,
+      throttle: 0.8,
+      brake: 0.0,
+      steer: 0.1
     };
   }
 });
