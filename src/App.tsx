@@ -19,6 +19,8 @@ const App: React.FC = () => {
     totalFuel: string;
     fuelPerStint: string;
     stintCount: number;
+    firstStintFuel: string;
+    formationFuel: string;
   } | null>(null);
   const [showHelp, setShowHelp] = useState<boolean>(false);
   const [darkMode, setDarkMode] = useState<boolean>(false);
@@ -77,18 +79,21 @@ const App: React.FC = () => {
     const lapSec = parseLapTime(lapTime);
     const totalSecs = parseFloat(raceMinutes) * 60;
     const laps = Math.ceil(totalSecs / lapSec);
+    const stintCount = pitstops + 1;
     const fuel = parseFloat(fuelPerLap);
+    const fuelPerStint = (laps / stintCount) * fuel;
     const buffer = fuel;
     const formation = includeFormation ? fuel : 0;
-    const stintCount = pitstops + 1;
     const totalFuel = (laps * fuel) + buffer + formation;
-    const fuelPerStint = (laps / stintCount) * fuel;
+    const firstStintFuel = fuelPerStint + formation;
 
     setResult({
       laps,
       totalFuel: totalFuel.toFixed(2),
       fuelPerStint: fuelPerStint.toFixed(2),
       stintCount,
+      firstStintFuel: firstStintFuel.toFixed(2),
+      formationFuel: formation.toFixed(2),
     });
   };
 
@@ -241,6 +246,7 @@ const App: React.FC = () => {
                     <div className="telemetry-label">Fuel per Stint ({result.stintCount})</div>
                   </div>
                 </div>
+                <div className="text-xs text-yellow-600 text-center mt-4">🔋 First Stint Setup: {result.firstStintFuel}L {includeFormation && `(+${result.formationFuel}L formation)`}</div>
               </div>
             )}
           </div>
