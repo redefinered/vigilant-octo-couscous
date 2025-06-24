@@ -97,6 +97,15 @@ const App: React.FC = () => {
     });
   };
 
+  // Helper to format lap times as mm:ss.sss
+  const formatLapTime = (seconds: number | undefined) => {
+    if (!seconds || seconds <= 0) return "0:00.000";
+    const min = Math.floor(seconds / 60);
+    const sec = Math.floor(seconds % 60);
+    const ms = Math.floor((seconds - min * 60 - sec) * 1000);
+    return `${min}:${sec.toString().padStart(2, '0')}.${ms.toString().padStart(3, '0')}`;
+  };
+
   return (
     <div className={`min-h-screen ${darkMode ? 'dark bg-gray-900 text-white' : 'bg-gray-50 text-gray-900'}`}>
       {/* Header */}
@@ -271,15 +280,15 @@ const App: React.FC = () => {
                     <div className="telemetry-label">Fuel Left</div>
                   </div>
                   <div className="text-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                    <div className="telemetry-value text-acc-blue">{telemetry.currentLapTime?.toFixed(2)} s</div>
+                    <div className="telemetry-value text-acc-blue">{formatLapTime(telemetry.currentLapTime)}</div>
                     <div className="telemetry-label">Current Lap</div>
                   </div>
                   <div className="text-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                    <div className="telemetry-value text-acc-blue">{telemetry.lastLapTime?.toFixed(2)} s</div>
+                    <div className="telemetry-value text-acc-blue">{formatLapTime(telemetry.lastLapTime)}</div>
                     <div className="telemetry-label">Last Lap</div>
                   </div>
                   <div className="text-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                    <div className="telemetry-value text-acc-blue">{telemetry.bestLapTime?.toFixed(2)} s</div>
+                    <div className="telemetry-value text-acc-blue">{formatLapTime(telemetry.bestLapTime)}</div>
                     <div className="telemetry-label">Best Lap</div>
                   </div>
                 </div>

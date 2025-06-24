@@ -47,22 +47,7 @@ public interface IACCData
     GraphicsData ReadGraphics();
 }
 
-public class PhysicsData
-{
-    public float fuel { get; set; }
-    public int ShiftRpm { get; set; }
-    public int rpms { get; set; }
-    public int gear { get; set; }
-    public float speedKmh { get; set; }
-    public float throttle { get; set; }
-    public float brake { get; set; }
-    public float steerAngle { get; set; }
-    public float[] tyrePressure { get; set; } = new float[4];
-    public float[] tyreTemp { get; set; } = new float[4];
-    public float[] rideHeight { get; set; } = new float[4];
-    public float[] brakeTemp { get; set; } = new float[4];
-}
-
+// Removed PhysicsData class to avoid duplicate definition
 public class StaticData
 {
     public string track { get; set; } = "";

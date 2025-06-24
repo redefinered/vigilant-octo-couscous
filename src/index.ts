@@ -2,12 +2,16 @@ import { app, BrowserWindow, session } from 'electron';
 import installExtension, { REACT_DEVELOPER_TOOLS } from 'electron-devtools-installer';
 import { ipcMain } from 'electron';
 import WebSocket from 'ws';
+import { spawn } from 'child_process';
+import path from 'path';
+
+let accBridgeProcess: any = null;
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
 declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: string;
 
-if (require('electron-squirrel-startup')) {
-  app.quit();
+if (process.argv.some(arg => arg.startsWith('--squirrel'))) {
+  process.exit(0);
 }
 
 const createWindow = (): void => {
@@ -35,6 +39,17 @@ app.whenReady().then(() => {
       },
     });
   });
+
+  let bridgePath;
+  if (app.isPackaged) {
+    // Use the path where extraResource puts ACCBridge.exe in the packaged app (no subfolder)
+    bridgePath = path.join(process.resourcesPath, 'ACCBridge.exe');
+  } else {
+    // In development, use the output from dotnet publish or a local build
+    bridgePath = path.join(__dirname, '..', 'ACCBridge', 'publish', 'ACCBridge.exe');
+  }
+  accBridgeProcess = spawn(bridgePath, [], { detached: true, stdio: 'ignore', windowsHide: true });
+
   installExtension(REACT_DEVELOPER_TOOLS)
     .then((name) => console.log(`Added Extension:  ${name}`))
     .catch((err) => console.log('An error occurred: ', err));
@@ -149,5 +164,11 @@ app.on('window-all-closed', () => {
 app.on('activate', () => {
   if (BrowserWindow.getAllWindows().length === 0) {
     createWindow();
+  }
+});
+
+app.on('will-quit', () => {
+  if (accBridgeProcess) {
+    accBridgeProcess.kill();
   }
 });
