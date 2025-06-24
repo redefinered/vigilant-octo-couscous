@@ -103,6 +103,7 @@ public class GraphicsData
     public float lastTime { get; set; }
     public float bestTime { get; set; }
     public string session { get; set; } = "";
+    public int fuelXLap { get; set; }
 }
 
 public class PhysicsData
@@ -176,7 +177,8 @@ public class ACCData : IACCData
                 currentTime = ParseLapTime(accGraphics.currentTime),
                 lastTime = ParseLapTime(accGraphics.lastTime),
                 bestTime = ParseLapTime(accGraphics.bestTime),
-                session = accGraphics.session.ToString()
+                session = accGraphics.session.ToString(),
+                fuelXLap = accGraphics.fuelXLap
             };
         }
         catch
