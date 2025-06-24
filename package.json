@@ -1,6 +1,6 @@
 {
   "name": "acc-companion",
-  "productName": "acc-companion",
+  "productName": "ACC Companion",
   "version": "0.0.5",
   "description": "My Electron application description",
   "main": ".webpack/main",
