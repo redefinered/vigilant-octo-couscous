@@ -1,0 +1,37 @@
+# GitHub Pages configuration
+title: ACC Companion
+description: Professional racing telemetry and setup analysis for Assetto Corsa Competizione
+url: "https://redefinered.github.io"
+baseurl: "/vigilant-octo-couscous"
+
+# Build settings
+markdown: kramdown
+highlighter: rouge
+plugins:
+  - jekyll-seo-tag
+  - jekyll-sitemap
+
+# Collections
+collections:
+  posts:
+    output: true
+    permalink: /:collection/:name/
+
+# Defaults
+defaults:
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "post"
+      author: "Red De Guzman"
+
+# Exclude from processing
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor/bundle/
+  - vendor/cache/
+  - vendor/gems/
+  - vendor/ruby/ 
