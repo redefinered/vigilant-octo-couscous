@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ACC Companion - Professional Racing Telemetry & Setup Analysis</title>
+    <meta name="description" content="Advanced desktop application for Assetto Corsa Competizione drivers. Features fuel calculation, live telemetry, and intelligent setup analysis.">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        .font-racing { font-family: 'Orbitron', monospace; }
+        .gradient-bg { background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%); }
+        .feature-card { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        .feature-card:hover { transform: translateY(-5px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); }
+        .telemetry-demo { background: linear-gradient(45deg, #1f2937, #374151); }
+        .setup-demo { background: linear-gradient(45deg, #065f46, #047857); }
+        .fuel-demo { background: linear-gradient(45deg, #7c2d12, #dc2626); }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="gradient-bg text-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center">
+                        <span class="text-blue-600 font-bold text-xl">🏁</span>
+                    </div>
+                    <h1 class="text-2xl font-bold font-racing">ACC Companion</h1>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#features" class="hover:text-blue-200 transition-colors">Features</a>
+                    <a href="#download" class="hover:text-blue-200 transition-colors">Download</a>
+                    <a href="#about" class="hover:text-blue-200 transition-colors">About</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="gradient-bg text-white py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-5xl md:text-6xl font-bold font-racing mb-6">
+                Professional Racing Telemetry
+            </h2>
+            <p class="text-xl md:text-2xl mb-8 text-blue-100">
+                Advanced desktop application for Assetto Corsa Competizione drivers.<br>
+                Calculate fuel, analyze setups, and monitor telemetry in real-time.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="#download" class="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-blue-50 transition-colors">
+                    Download v0.0.5
+                </a>
+                <a href="https://github.com/redefinered/vigilant-octo-couscous" class="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition-colors">
+                    View on GitHub
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h3 class="text-4xl font-bold text-center mb-16 text-gray-800">Powerful Features</h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+                <!-- Fuel Calculator -->
+                <div class="feature-card bg-white rounded-xl shadow-lg p-8">
+                    <div class="fuel-demo rounded-lg p-6 mb-6 text-center">
+                        <span class="text-4xl">⛽</span>
+                    </div>
+                    <h4 class="text-2xl font-bold mb-4 text-gray-800">Smart Fuel Calculator</h4>
+                    <ul class="space-y-3 text-gray-600">
+                        <li class="flex items-center">
+                            <span class="text-green-500 mr-2">✓</span>
+                            Auto-calculate from ACC telemetry
+                        </li>
+                        <li class="flex items-center">
+                            <span class="text-green-500 mr-2">✓</span>
+                            Real-time lap time updates
+                        </li>
+                        <li class="flex items-center">
+                            <span class="text-green-500 mr-2">✓</span>
+                            Formation lap support
+                        </li>
+                        <li class="flex items-center">
+                            <span class="text-green-500 mr-2">✓</span>
+                            Pit stop optimization
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Live Telemetry -->
+                <div class="feature-card bg-white rounded-xl shadow-lg p-8">
+                    <div class="telemetry-demo rounded-lg p-6 mb-6 text-center">
+                        <span class="text-4xl">📊</span>
+                    </div>
+                    <h4 class="text-2xl font-bold mb-4 text-gray-800">Live Telemetry</h4>
+                    <ul class="space-y-3 text-gray-600">
+                        <li class="flex items-center">
+                            <span class="text-green-500 mr-2">✓</span>
+                            Real-time data from ACC
+                        </li>
+                        <li class="flex items-center">
+                            <span class="text-green-500 mr-2">✓</span>
+                            Fuel, speed, RPM monitoring
+                        </li>
+                        <li class="flex items-center">
+                            <span class="text-green-500 mr-2">✓</span>
+                            Lap time tracking
+                        </li>
+                        <li class="flex items-center">
+                            <span class="text-green-500 mr-2">✓</span>
+                            Session information
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Setup Analysis -->
+                <div class="feature-card bg-white rounded-xl shadow-lg p-8">
+                    <div class="setup-demo rounded-lg p-6 mb-6 text-center">
+                        <span class="text-4xl">🔧</span>
+                    </div>
+                    <h4 class="text-2xl font-bold mb-4 text-gray-800">Setup Analysis</h4>
+                    <ul class="space-y-3 text-gray-600">
+                        <li class="flex items-center">
+                            <span class="text-green-500 mr-2">✓</span>
+                            Tyre pressure monitoring
+                        </li>
+                        <li class="flex items-center">
+                            <span class="text-green-500 mr-2">✓</span>
+                            Temperature analysis
+                        </li>
+                        <li class="flex items-center">
+                            <span class="text-green-500 mr-2">✓</span>
+                            Intelligent suggestions
+                        </li>
+                        <li class="flex items-center">
+                            <span class="text-green-500 mr-2">✓</span>
+                            Performance optimization
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Feature Demos -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Fuel Calculator Demo -->
+                <div class="bg-white rounded-xl shadow-lg p-8">
+                    <h4 class="text-2xl font-bold mb-6 text-gray-800">Fuel Calculator Demo</h4>
+                    <div class="bg-gray-100 rounded-lg p-6 font-mono text-sm">
+                        <div class="mb-4">
+                            <span class="text-blue-600">📊 Auto-calculate enabled</span><br>
+                            <span class="text-green-600">Fuel per lap: 2.94L (from telemetry)</span><br>
+                            <span class="text-green-600">Last lap: 2:06.5 (from telemetry)</span>
+                        </div>
+                        <div class="bg-blue-50 p-4 rounded border-l-4 border-blue-500">
+                            <div class="text-center">
+                                <div class="text-2xl font-bold text-blue-600">43</div>
+                                <div class="text-sm text-gray-600">Estimated Laps</div>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4 mt-4">
+                                <div class="text-center">
+                                    <div class="text-lg font-bold text-red-600">132.0L</div>
+                                    <div class="text-xs text-gray-600">Total Fuel</div>
+                                </div>
+                                <div class="text-center">
+                                    <div class="text-lg font-bold text-green-600">44.0L</div>
+                                    <div class="text-xs text-gray-600">Per Stint</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Setup Analysis Demo -->
+                <div class="bg-white rounded-xl shadow-lg p-8">
+                    <h4 class="text-2xl font-bold mb-6 text-gray-800">Setup Analysis Demo</h4>
+                    <div class="space-y-4">
+                        <div class="bg-green-50 p-4 rounded border-l-4 border-green-500">
+                            <div class="flex items-center justify-between">
+                                <span class="font-semibold text-green-800">Tyre Pressures</span>
+                                <span class="text-green-600">Optimal</span>
+                            </div>
+                            <div class="text-sm text-green-700 mt-1">
+                                FL: 2.0 | FR: 2.0 | RL: 2.0 | RR: 2.0 bar
+                            </div>
+                        </div>
+                        <div class="bg-yellow-50 p-4 rounded border-l-4 border-yellow-500">
+                            <div class="flex items-center justify-between">
+                                <span class="font-semibold text-yellow-800">Tyre Temperatures</span>
+                                <span class="text-yellow-600">Suboptimal</span>
+                            </div>
+                            <div class="text-sm text-yellow-700 mt-1">
+                                FL: 85°C | FR: 85°C | RL: 80°C | RR: 80°C
+                            </div>
+                        </div>
+                        <div class="bg-blue-50 p-4 rounded border-l-4 border-blue-500">
+                            <div class="flex items-center justify-between">
+                                <span class="font-semibold text-blue-800">Setup Suggestions</span>
+                                <span class="text-blue-600">2 Active</span>
+                            </div>
+                            <div class="text-sm text-blue-700 mt-1">
+                                • Consider tyre pressure adjustment<br>
+                                • Monitor temperature balance
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Download Section -->
+    <section id="download" class="bg-gray-100 py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h3 class="text-4xl font-bold mb-8 text-gray-800">Download ACC Companion</h3>
+            <p class="text-xl text-gray-600 mb-12">Get the latest version with all new features</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+                <div class="bg-white rounded-xl shadow-lg p-8">
+                    <div class="text-4xl mb-4">🪟</div>
+                    <h4 class="text-xl font-bold mb-2">Windows</h4>
+                    <p class="text-gray-600 mb-4">Compatible with Windows 10/11</p>
+                    <a href="#" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                        Download .exe
+                    </a>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-lg p-8">
+                    <div class="text-4xl mb-4">🍎</div>
+                    <h4 class="text-xl font-bold mb-2">macOS</h4>
+                    <p class="text-gray-600 mb-4">Compatible with macOS 10.15+</p>
+                    <a href="#" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                        Download .dmg
+                    </a>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-lg p-8">
+                    <div class="text-4xl mb-4">🐧</div>
+                    <h4 class="text-xl font-bold mb-2">Linux</h4>
+                    <p class="text-gray-600 mb-4">Compatible with Ubuntu 18.04+</p>
+                    <a href="#" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                        Download .AppImage
+                    </a>
+                </div>
+            </div>
+            
+            <div class="bg-blue-50 rounded-lg p-6 max-w-2xl mx-auto">
+                <h4 class="text-lg font-bold mb-2 text-blue-800">System Requirements</h4>
+                <ul class="text-sm text-blue-700 space-y-1">
+                    <li>• Assetto Corsa Competizione (for telemetry features)</li>
+                    <li>• .NET Core 6.0+ (for ACCBridge telemetry server)</li>
+                    <li>• 4GB RAM minimum, 8GB recommended</li>
+                    <li>• 100MB free disk space</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h3 class="text-4xl font-bold mb-6 text-gray-800">Built for Sim Racers</h3>
+                    <p class="text-lg text-gray-600 mb-6">
+                        ACC Companion is designed to help serious sim racers focus on what matters most - driving. 
+                        No more spreadsheets, no more manual calculations. Get real-time insights and make data-driven decisions.
+                    </p>
+                    <div class="space-y-4">
+                        <div class="flex items-center">
+                            <span class="text-green-500 mr-3">✓</span>
+                            <span>Real-time telemetry from ACC</span>
+                        </div>
+                        <div class="flex items-center">
+                            <span class="text-green-500 mr-3">✓</span>
+                            <span>Intelligent setup analysis</span>
+                        </div>
+                        <div class="flex items-center">
+                            <span class="text-green-500 mr-3">✓</span>
+                            <span>Automatic fuel calculations</span>
+                        </div>
+                        <div class="flex items-center">
+                            <span class="text-green-500 mr-3">✓</span>
+                            <span>Professional-grade insights</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-100 rounded-xl p-8">
+                    <h4 class="text-2xl font-bold mb-4 text-gray-800">Tech Stack</h4>
+                    <div class="grid grid-cols-2 gap-4 text-sm">
+                        <div class="bg-white p-3 rounded">
+                            <span class="font-semibold">Frontend:</span><br>
+                            Electron, React, TypeScript
+                        </div>
+                        <div class="bg-white p-3 rounded">
+                            <span class="font-semibold">Backend:</span><br>
+                            .NET Core, WebSocket
+                        </div>
+                        <div class="bg-white p-3 rounded">
+                            <span class="font-semibold">Styling:</span><br>
+                            Tailwind CSS
+                        </div>
+                        <div class="bg-white p-3 rounded">
+                            <span class="font-semibold">Telemetry:</span><br>
+                            ACC Shared Memory
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <h4 class="text-xl font-bold mb-4">ACC Companion</h4>
+                    <p class="text-gray-400">
+                        Professional racing telemetry and setup analysis for Assetto Corsa Competizione.
+                    </p>
+                </div>
+                <div>
+                    <h4 class="text-xl font-bold mb-4">Links</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="https://github.com/redefinered/vigilant-octo-couscous" class="hover:text-white">GitHub Repository</a></li>
+                        <li><a href="https://github.com/redefinered/vigilant-octo-couscous/releases" class="hover:text-white">Releases</a></li>
+                        <li><a href="https://github.com/redefinered/vigilant-octo-couscous/blob/main/CHANGELOG.md" class="hover:text-white">Changelog</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-xl font-bold mb-4">Author</h4>
+                    <p class="text-gray-400">
+                        Created by <a href="https://github.com/redefinered" class="text-blue-400 hover:text-blue-300">Red De Guzman</a><br>
+                        For sim racers who want to focus on racing.
+                    </p>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2025 ACC Companion. MIT License.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html> 

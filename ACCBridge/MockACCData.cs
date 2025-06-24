@@ -35,7 +35,8 @@ public class MockACCData : IACCData
             currentTime = 85000,
             lastTime = 90000,
             bestTime = 88000,
-            session = "Race"
+            session = "Race",
+            fuelXLap = 2940 // 2.94L per lap in ml
         };
     }
 }
