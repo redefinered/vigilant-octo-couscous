@@ -1,7 +1,7 @@
 {
   "name": "acc-companion",
   "productName": "acc-companion",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "My Electron application description",
   "main": ".webpack/main",
   "scripts": {
