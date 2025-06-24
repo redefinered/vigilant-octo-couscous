@@ -86,7 +86,8 @@ app.Map("/telemetry", async context =>
                 lastLapTime = graphi.lastTime,
                 bestLapTime = graphi.bestTime,
                 sessionType = graphi.session,
-                track = stats.track
+                track = stats.track,
+                fuelXLap = graphi.fuelXLap
             };
             Console.WriteLine($"Current: {graphi.currentTime}, Last: {graphi.lastTime}, Best: {graphi.bestTime}");
 
