@@ -86,9 +86,10 @@ app.Map("/telemetry", async context =>
                 lastLapTime = graphi.lastTime,
                 bestLapTime = graphi.bestTime,
                 sessionType = graphi.session,
-                track = stats.track
+                track = stats.track,
+                completedLaps = acc.ReadGraphics().completedLaps
             };
-            Console.WriteLine($"Current: {graphi.currentTime}, Last: {graphi.lastTime}, Best: {graphi.bestTime}");
+            Console.WriteLine($"Current: {graphi.currentTime}, Last: {graphi.lastTime}, Best: {graphi.bestTime}, Laps: {graphi.completedLaps}");
 
             var json = JsonSerializer.Serialize(payload);
             var buffer = Encoding.UTF8.GetBytes(json);

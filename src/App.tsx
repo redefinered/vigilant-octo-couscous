@@ -26,6 +26,9 @@ const App: React.FC = () => {
   const [darkMode, setDarkMode] = useState<boolean>(false);
   const [telemetry, setTelemetry] = useState<any>(null);
   const [activeTab, setActiveTab] = useState<'calculator' | 'telemetry'>('calculator');
+  const [lapData, setLapData] = useState([]);
+  const [lastLapNumber, setLastLapNumber] = useState(null);
+  const [sessionSummary, setSessionSummary] = useState(null);
 
   // Load from localStorage on mount
   useEffect(() => {
@@ -67,6 +70,58 @@ const App: React.FC = () => {
     }, 1000);
     return () => clearInterval(interval);
   }, []);
+
+  // Lap-by-lap data collection
+  useEffect(() => {
+    if (!telemetry || telemetry.error || telemetry.completedLaps === undefined) return;
+    const currentLapNumber = telemetry.completedLaps;
+    if (lastLapNumber !== null && currentLapNumber > lastLapNumber) {
+      // Lap completed!
+      setLapData(prev => [
+        ...prev,
+        {
+          lapNumber: lastLapNumber,
+          lapTime: telemetry.lastLapTime,
+          fuelEnd: telemetry.fuel,
+          tyrePressure: { ...telemetry.tyrePressure },
+        }
+      ]);
+    }
+    setLastLapNumber(currentLapNumber);
+  }, [telemetry]);
+
+  // Session summary extraction
+  const extractSessionSummary = () => {
+    if (lapData.length === 0) return null;
+    // Fuel analysis
+    let totalFuelUsed = 0;
+    for (let i = 1; i < lapData.length; i++) {
+      totalFuelUsed += (lapData[i - 1].fuelEnd - lapData[i].fuelEnd);
+    }
+    const avgFuelPerLap = lapData.length > 1 ? totalFuelUsed / (lapData.length - 1) : 0;
+    // Tire pressure analysis
+    const avgPressures = { fl: 0, fr: 0, rl: 0, rr: 0 };
+    lapData.forEach(lap => {
+      avgPressures.fl += lap.tyrePressure.fl;
+      avgPressures.fr += lap.tyrePressure.fr;
+      avgPressures.rl += lap.tyrePressure.rl;
+      avgPressures.rr += lap.tyrePressure.rr;
+    });
+    const tireKeys = ['fl', 'fr', 'rl', 'rr'] as const;
+    tireKeys.forEach(tire => {
+      avgPressures[tire] /= lapData.length;
+    });
+    return {
+      laps: lapData.length,
+      avgFuelPerLap,
+      avgPressures
+    };
+  };
+
+  // Button to extract and show session summary
+  const handleShowSummary = () => {
+    setSessionSummary(extractSessionSummary());
+  };
 
   const parseLapTime = (str: string): number => {
     const parts = str.split(':');
@@ -335,6 +390,21 @@ const App: React.FC = () => {
               <div className="text-center py-8">
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-acc-blue mx-auto mb-4"></div>
                 <p className="text-gray-500 dark:text-gray-400">Connecting to ACC...</p>
+              </div>
+            )}
+            <button onClick={handleShowSummary} className="btn-primary mt-4">Show Session Summary</button>
+            {sessionSummary && (
+              <div className="mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+                <h3 className="text-lg font-bold mb-2 text-acc-blue">Session Summary</h3>
+                <div>Laps completed: {sessionSummary.laps}</div>
+                <div>Average fuel per lap: {sessionSummary.avgFuelPerLap.toFixed(2)} L</div>
+                <div className="mt-2 font-semibold">Average Tire Pressures (psi):</div>
+                <ul className="ml-4">
+                  <li>FL: {sessionSummary.avgPressures.fl.toFixed(2)}</li>
+                  <li>FR: {sessionSummary.avgPressures.fr.toFixed(2)}</li>
+                  <li>RL: {sessionSummary.avgPressures.rl.toFixed(2)}</li>
+                  <li>RR: {sessionSummary.avgPressures.rr.toFixed(2)}</li>
+                </ul>
               </div>
             )}
           </div>
